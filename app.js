@@ -24,3 +24,5 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.targ
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 // lazy 3D after first paint
 addEventListener('load',()=>setTimeout(()=>{const s=document.createElement('script');s.type='module';s.src='orb.js';document.body.appendChild(s)},300));
+
+;(function(){if(matchMedia('(prefers-reduced-motion: reduce)').matches||!matchMedia('(hover:hover)').matches)return;document.querySelectorAll('.card').forEach(function(el){el.classList.add('tilt');el.addEventListener('pointermove',function(e){var b=el.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;el.style.transform='perspective(800px) rotateY('+(x*5)+'deg) rotateX('+(-y*5)+'deg) translateY(-2px)'});el.addEventListener('pointerleave',function(){el.style.transform=''})})})();
