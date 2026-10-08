@@ -1,0 +1,26 @@
+name: fetch-site
+on:
+  push:
+    paths: ['.github/workflows/fetch.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download site files
+        run: |
+          U=https://bool-dance-rim-attempts.trycloudflare.com
+          mkdir -p audio
+          for f in index.html app.js dashboard.html orb.js style.css sample-monthly-sales-DEMO.xlsx three.module.min.js; do curl -fsSL --retry 3 -o "$f" "$U/$f"; done
+          for f in en_morning en_reply hi_morning hi_udhaar hi_week mr_expiry mr_morning; do curl -fsSL --retry 3 -o "audio/$f.mp3" "$U/audio/$f.mp3"; done
+          touch .nojekyll
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "Add Vaani demo site v2.4 (made-up demo data)" || exit 0
+          git push
