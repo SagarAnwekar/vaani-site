@@ -4,8 +4,8 @@
   const cv=document.getElementById('orb'); if(!cv) return;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const c=navigator.connection||{};
-  const weak=(navigator.hardwareConcurrency||4)<=2||(navigator.deviceMemory&&navigator.deviceMemory<=2)||c.saveData||/2g/.test(c.effectiveType||'');
-  const force=/force3d/.test(location.search);if(!force&&(reduce||weak||innerWidth<480)){cv.style.display='none';return;}
+  const weak=(navigator.deviceMemory&&navigator.deviceMemory<=1)||c.saveData||/2g/.test(c.effectiveType||'');
+  const force=/force3d/.test(location.search);if(!force&&(reduce||weak||false)){cv.style.display='none';return;}
   const coarse=matchMedia('(pointer: coarse)').matches;
   let THREE; try{THREE=await import('./three.module.min.js');}catch(e){window.__orbErr=String(e);cv.style.display='none';return;}
   let r; try{r=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:false,powerPreference:'low-power'});}catch(e){window.__orbErr=String(e);cv.style.display='none';return;}
@@ -19,7 +19,7 @@
   g.boundingSphere=new THREE.Sphere(new THREE.Vector3(),20);
   const U={uT:{value:0},uLow:{value:0},uMid:{value:0},uHigh:{value:0},uPx:{value:r.getPixelRatio()},uS:{value:0}};
   // uS = scroll progress 0..1. Shapes: ring (voice) -> bars (sales) -> sphere (your data) -> ring.
-  const m=new THREE.ShaderMaterial({uniforms:U,transparent:true,depthWrite:false,
+  const m=new THREE.ShaderMaterial({uniforms:U,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
    vertexShader:`attribute vec3 aData;uniform float uT,uLow,uMid,uHigh,uPx,uS;varying float vA;
     float sm(float a,float b,float x){return smoothstep(a,b,x);}
     void main(){
@@ -33,15 +33,15 @@
      float w=sm(.15,.4,uS)*(1.-sm(.7,.92,uS));
      vec3 p=mix(ring,sph,w);
      vec4 mv=modelViewMatrix*vec4(p,1.);gl_Position=projectionMatrix*mv;
-     gl_PointSize=(1.8+aData.z*1.8+uHigh*2.)*uPx*(8./-mv.z);vA=.28+.5*aData.y;}`,
+     gl_PointSize=(2.6+aData.z*2.4+uHigh*2.5)*uPx*(8./-mv.z);vA=.55+.45*aData.y;}`,
    fragmentShader:`varying float vA;void main(){float d=length(gl_PointCoord-.5);if(d>.5)discard;
-     gl_FragColor=vec4(.12,.31,.15,vA*(1.-d*1.8));}`});
+     gl_FragColor=vec4(.32,.95,.58,vA*(1.-d*1.7));}`});
   const pts=new THREE.Points(g,m);scene.add(pts);
   let mx=0,my=0,tx=0,ty=0;
   addEventListener('pointermove',e=>{tx=(e.clientX/innerWidth-.5);ty=(e.clientY/innerHeight-.5);},{passive:true});
   let sc=0;const dbg=/[?&]s=([0-9.]+)/.exec(location.search);function scroll(){if(dbg){sc=+dbg[1];return;}const h=document.documentElement.scrollHeight-innerHeight;sc=h>0?Math.min(1,Math.max(0,scrollY/h)):0;}
   addEventListener('scroll',scroll,{passive:true});scroll();
-  function size(){const w=innerWidth,h=innerHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();const d=w>860;pts.position.x=d?2.7:0;pts.position.y=d?0:2.2;pts.scale.setScalar(d?.78:.55);}
+  function size(){const w=innerWidth,h=innerHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();const d=w>860;pts.position.x=d?2.7:0;pts.position.y=d?0:1.9;pts.scale.setScalar(d?.85:.7);}
   size();addEventListener('resize',size);
   let tl=0,tm=0,th=0,tab=true,running=false;
   document.addEventListener('vaani-bands',e=>{[tl,tm,th]=e.detail});
