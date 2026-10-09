@@ -2,21 +2,21 @@
 <title>Vaani BI - Your shop's numbers, as a voice message</title>
 <meta name="description" content="A WhatsApp voice note every morning with yesterday's sales, cash, udhaar and medicines near expiry. Marathi, Hindi, English.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="theme.css"></head><body>
 <header><div class="w bar"><a class="brand" href="#top">Vaani BI</a>
 <div class="right"><div class="lang" role="group" aria-label="Language"><button data-l="mr" aria-pressed="false">मराठी</button><button data-l="hi" aria-pressed="false">हिंदी</button><button data-l="en" aria-pressed="true">EN</button></div>
 <a class="btn" href="https://wa.me/919370727222?text=Hi%2C%20I%20want%20the%207-day%20free%20trial">WhatsApp</a></div></div></header>
 <main id="top">
-<div id="bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="grid"></i></div><canvas id="orb" aria-hidden="true"></canvas><section class="hero"><div class="w"><div class="grid">
+<canvas id="orb" aria-hidden="true"></canvas><section class="hero"><div class="w"><div class="grid">
 <div><h1 id="h1">Your shop's numbers, as a voice message.</h1><p class="lead" id="lead"></p>
 <div class="cta"><a class="btn" id="cta1" href="https://wa.me/919370727222?text=Hi%2C%20I%20want%20the%207-day%20free%20trial">Start 7 days free on WhatsApp</a><a class="btn ghost" id="cta2" href="#hear">Hear a sample</a></div>
 <p class="small" style="margin-top:16px"><b style="font-weight:500;color:var(--accent)">Pilot: free for the first 10 Pune medical shops.</b> Read-only. No new app. Samples use made-up demo data.</p></div>
-<div class="phone" aria-label="Example WhatsApp chat"><div class="top">Vaani BI &middot; today 9:00 AM</div>
+<div class="rc"><div class="stage" data-stage="hero" aria-hidden="true"><span class="cp c1"></span><span class="cp c2"></span><span class="cp c3"></span><span class="cp c4"></span><span class="cp c5"></span></div><div class="phone" aria-label="Example WhatsApp chat"><div class="top">Vaani BI &middot; today 9:00 AM</div>
 <div class="msg"><div class="vn" id="heroVn" data-playing="false"><button class="play" id="heroPlay" aria-label="Play voice note">&#9654;</button><div class="wave"></div><span class="small" id="dur">voice note</span></div>
 <audio id="heroAudio" preload="none"></audio></div>
 <div class="msg">Yesterday: <b style="font-weight:500">Rs 20,850</b> sale<br>Cash 11,983 &middot; UPI 8,867<br>Credit pending: Rs 13,300<br>3 medicines expire in 60 days</div>
-<div class="msg me">उधारी कितनी बाकी है?</div></div>
+<div class="msg me">उधारी कितनी बाकी है?</div></div></div>
 </div></div></section>
 
 <section class="alt"><div class="w"><div class="head reveal"><h2>Sound familiar?</h2></div>
@@ -83,8 +83,8 @@
 <details><summary>Is it safe?</summary><p>We only read the sheet you share and never change it.</p></details>
 <details><summary>How do I stop?</summary><p>Message us on WhatsApp. No lock-in.</p></details></div></section>
 
-<section><div class="w reveal" style="text-align:center"><h2>Try it free for a week</h2><p class="muted" style="margin:12px 0 24px">We are starting with medical shops in Pune.</p><a class="btn" href="https://wa.me/919370727222?text=Hi%2C%20I%20want%20the%207-day%20free%20trial">Message us on WhatsApp</a></div></section>
+<section class="ctaS"><div class="w reveal" style="text-align:center"><div class="stage st2" data-stage="cta" aria-hidden="true"><span class="cp c1"></span><span class="cp c2"></span><span class="cp c3"></span><span class="cp c4"></span><span class="cp c5"></span></div><h2>Try it free for a week</h2><p class="muted" style="margin:12px 0 24px">We are starting with medical shops in Pune.</p><a class="btn" href="https://wa.me/919370727222?text=Hi%2C%20I%20want%20the%207-day%20free%20trial">Message us on WhatsApp</a></div></section>
 </main>
 <footer><div class="w">Vaani BI &middot; Built in Pune &middot; This page is a draft. Samples use demo data.</div></footer>
 <audio id="heroAudioFallback" hidden></audio>
-<script src="app.js"></script><script src="fx.js" defer></script></body></html>
+<script src="app.js"></script><script src="lenis.min.js" defer></script><script src="fx.js" defer></script></body></html>
