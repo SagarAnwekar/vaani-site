@@ -1,5 +1,5 @@
 name: fetch-site
-# v4
+# v5
 on:
   push:
     paths: ['.github/workflows/fetch.yml']
@@ -15,7 +15,7 @@ jobs:
         run: |
           U=https://soon-prozac-bikes-ted.trycloudflare.com
           mkdir -p audio
-          for f in index.html app.js fx.js dashboard.html orb.js style.css sample-monthly-sales-DEMO.xlsx three.module.min.js; do curl -fsSL --retry 3 -o "$f" "$U/$f"; done
+          for f in index.html app.js fx.js theme.css dashboard.html orb.js style.css sample-monthly-sales-DEMO.xlsx three.module.min.js; do curl -fsSL --retry 3 -o "$f" "$U/$f"; done
           for f in en_morning en_reply hi_morning hi_udhaar hi_week mr_expiry mr_morning; do curl -fsSL --retry 3 -o "audio/$f.mp3" "$U/audio/$f.mp3"; done
           touch .nojekyll
       - name: Commit
