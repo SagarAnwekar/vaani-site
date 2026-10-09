@@ -23,3 +23,5 @@ Source uses React, React DOM and esbuild, with Three.js vendored under MIT. Bund
 ## Checks
 
 Local Chrome checks cover 320px, 390px and 1280px layouts, language playback, rapid switches, workflow tabs, FAQ, dashboard focus/escape/background lock, reduced motion and unavailable WebGL. Actual phone playback and native-speaker voice quality still need review.
+
+To rebuild: unzip `vaani-source.zip`, run `npm install`, then `npm run build`. Open or deploy `dist/index.html`. The rebuild needs Node.js and an internet connection for the initial dependency install. The finished HTML is standalone. The archive includes the build script and package manifest.
