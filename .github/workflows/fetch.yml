@@ -1,5 +1,4 @@
-name: fetch-site
-# v6
+name: publish-approved-vaani
 on:
   push:
     paths: ['.github/workflows/fetch.yml']
@@ -7,21 +6,21 @@ on:
 permissions:
   contents: write
 jobs:
-  fetch:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download site files
+      - name: Verify approved release and unpack
         run: |
-          U=https://soon-prozac-bikes-ted.trycloudflare.com
-          mkdir -p audio
-          for f in index.html lenis.min.js app.js fx.js theme.css dashboard.html orb.js style.css sample-monthly-sales-DEMO.xlsx three.module.min.js; do curl -fsSL --retry 3 -o "$f" "$U/$f"; done
-          for f in en_morning en_reply hi_morning hi_udhaar hi_week mr_expiry mr_morning; do curl -fsSL --retry 3 -o "audio/$f.mp3" "$U/audio/$f.mp3"; done
+          curl -fL --retry 2 https://github.com/SagarAnwekar/vaani-site/releases/download/v0.3.0-cinema/vaani-public-release.zip -o /tmp/vaani-release.zip
+          echo '8e7731bf2801a0235b458fd1d5ff1a505f873e8aece763571d136e7b974237e1  /tmp/vaani-release.zip' | sha256sum -c -
+          unzip -o /tmp/vaani-release.zip
+          unzip -o vaani-source.zip
           touch .nojekyll
-      - name: Commit
+      - name: Commit approved static site and source
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add -A
-          git commit -m "Add Vaani demo site v2.4 (made-up demo data)" || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html README.md THREE-LICENSE.txt vaani-source.zip src .nojekyll
+          git diff --staged --quiet || git commit -m 'Publish approved Vaani cinema concept'
           git push
