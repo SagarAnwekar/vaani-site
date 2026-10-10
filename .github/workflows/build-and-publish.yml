@@ -1,0 +1,33 @@
+name: build-and-publish-vaani
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['src/**', 'build.mjs', 'package.json', 'package-lock.json', '.github/workflows/build-and-publish.yml']
+permissions:
+  contents: write
+concurrency:
+  group: vaani-build
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          HELP_API_URL: ${{ vars.HELP_API_URL }}
+      - name: Commit built index.html
+        run: |
+          test -s dist/index.html
+          cp dist/index.html index.html
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --staged --quiet || git commit -m 'Build Vaani site from source'
+          git push
