@@ -19,3 +19,5 @@ trigger branch GitHub Pages. Publish requires a normal owner commit after the bu
 or a direct GitHub Pages artifact deployment workflow. No paid services configured.
 
 The API rejects short classifier output and uses a 10-second upstream timeout.
+
+Suggested question chips use the exact local FAQ category in each language. Only free-typed questions use experimental AI.
