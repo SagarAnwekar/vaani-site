@@ -69,7 +69,7 @@ async def ask(b: Body, req: Request):
         return JSONResponse({"error": "busy"}, status_code=429)
     async with lock:
         day["n"] += 1
-        async with httpx.AsyncClient(timeout=25) as c:
+        async with httpx.AsyncClient(timeout=10) as c:
             for m in MODELS:
                 try:
                     r = await c.post("https://openrouter.ai/api/v1/chat/completions",
