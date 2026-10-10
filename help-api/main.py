@@ -78,7 +78,7 @@ async def ask(b: Body, req: Request):
                               "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": msg}]})
                     if r.status_code == 200:
                         t = (r.json()["choices"][0]["message"]["content"] or "").strip()
-                        if t:
+                        if t and len(t) >= 40 and not any(x in t.lower() for x in ['user safety:', 'assistant safety:']):
                             return {"reply": t[:900]}
                 except Exception:
                     continue
