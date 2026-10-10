@@ -17,3 +17,5 @@ Do not submit customer, patient or bank details. FAQ handles API failures locall
 The build workflow commits generated index.html but its GITHUB_TOKEN push does not
 trigger branch GitHub Pages. Publish requires a normal owner commit after the build,
 or a direct GitHub Pages artifact deployment workflow. No paid services configured.
+
+The API rejects short classifier output and uses a 10-second upstream timeout.
