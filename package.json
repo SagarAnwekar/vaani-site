@@ -1,16 +1,22 @@
 {
   "name": "vaani-site",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "scripts": {
     "build": "node build.mjs"
   },
   "dependencies": {
     "firebase": "^12.4.0",
+    "motion": "^12.23.24",
+    "papaparse": "^5.5.3",
     "react": "19.1.1",
     "react-dom": "19.1.1"
   },
   "devDependencies": {
-    "esbuild": "0.25.9"
+    "esbuild": "0.25.9",
+    "playwright": "^1.56.1"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6"
   }
 }

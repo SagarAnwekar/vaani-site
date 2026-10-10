@@ -1,0 +1,15 @@
+import Papa from 'papaparse';
+export const SAMPLE=`date,cash,upi,credit
+2026-10-01,11900,7400,600
+2026-10-02,12850,9200,450
+2026-10-03,10200,8400,700
+2026-10-04,15100,11200,350
+2026-10-05,9800,7600,900
+2026-10-06,13200,9800,500
+2026-10-07,11983,8867,650`;
+export const fields=['date','cash','upi','credit'];
+export function parseCSV(text:string){if(text.length>1000000)throw Error('Keep the CSV under 1 MB.');const parsed=Papa.parse(text.trim(),{header:true,skipEmptyLines:'greedy',transformHeader:h=>h.trim().replace(/^\uFEFF/,'')});if(parsed.errors.length)throw Error('CSV could not be read. Check quotes and the number of columns.');if(!parsed.data.length||parsed.data.length>5000)throw Error('Use 1 to 5,000 rows.');const headers=parsed.meta.fields||[];if(new Set(headers).size!==headers.length)throw Error('Column names must be unique.');return {headers,rows:parsed.data as Record<string,string>[]};}
+export function money(v:string,line:number){const s=String(v??'').trim();if(!/^\d+(\.\d{1,2})?$/.test(s))throw Error(`Row ${line}: amounts must be non-negative numbers with up to 2 decimals, no commas or currency signs.`);const [whole,frac='']=s.split('.');const n=Number(whole)*100+Number(frac.padEnd(2,'0'));if(!Number.isSafeInteger(n)||n>10000000000)throw Error(`Row ${line}: amount is too large.`);return n;}
+export function calculate(raw:Record<string,string>[],map:Record<string,string>){if(fields.some(f=>!map[f]))throw Error('Match all four columns before checking.');if(new Set(Object.values(map)).size!==4)throw Error('Choose a different column for each field.');const seen=new Set();const rows=raw.map((r,i)=>{const date=String(r[map.date]||'').trim();if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||isNaN(Date.parse(date))||new Date(date+'T00:00:00Z').toISOString().slice(0,10)!==date)throw Error(`Row ${i+2}: use a valid YYYY-MM-DD date.`);const cash=money(r[map.cash],i+2),upi=money(r[map.upi],i+2),credit=money(r[map.credit],i+2);const key=[date,cash,upi,credit].join('|');if(seen.has(key))throw Error(`Row ${i+2}: identical row found. Check for duplicate exports.`);seen.add(key);return {date,cash,upi,credit,total:cash+upi+credit,line:i+2}});const days=Object.values(rows.reduce((a,r)=>{if(!a[r.date])a[r.date]={date:r.date,cash:0,upi:0,credit:0,total:0};for(const k of ['cash','upi','credit','total'])a[r.date][k]+=r[k];return a;},{})).sort((a:any,b:any)=>a.date.localeCompare(b.date)) as any[];const totals=rows.reduce((a,r)=>{for(const k of ['cash','upi','credit','total'])a[k]+=r[k];return a;},{cash:0,upi:0,credit:0,total:0});if(Object.values(totals).some(n=>!Number.isSafeInteger(n)))throw Error('Totals exceed the supported range. Use a smaller export.');return {rows,days,totals,latest:days.at(-1),first:days[0].date,last:days.at(-1).date};}
+export const rupee=(n:number)=>'₹'+(n/100).toLocaleString('en-IN',{minimumFractionDigits:n%100?2:0,maximumFractionDigits:2});
+export function saveFile(name:string,text:string,type='text/plain'){const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
